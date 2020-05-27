@@ -1,72 +1,69 @@
 <template>
   <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        seeessess
-      </h1>
-      <h2 class="subtitle">
-        My impressive Nuxt.js project
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <div
+      class="content"
+    >Hello, World Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus quae repellendus doloremque eos quod libero consectetur aperiam quo perferendis esse facere inventore ipsum.</div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
-  components: {
-    Logo
+  mounted() {
+    var content = document.querySelector(".content");
+    var value = content.textContent;
+    // value = value.split("").map(item => item.trim());
+
+    var result = value.replace(/(?![^<]*>)[^<]/g, c => {
+      if (c !== " ") {
+        return `<span class="mask">${c}</span>\n`;
+      } else {
+        return `<span>&nbsp;</span>\n`;
+      }
+    });
+    content.innerHTML = result;
+    // for (let i = 0; i < value.length; i++) {
+    //   const element = value[i];
+    //   if (element !== " ") {
+    //     content.innerHTML += "<span>" + element + "</span>";
+    //   }
+    // }
+
+    var mask = document.querySelectorAll(".mask");
+    for (let i = 0; i < mask.length; i++) {
+      // const element = mask[i];
+      var toggleText = addActiveClass(i);
+      setTimeout(() => (toggleText, i * 100));
+    }
+
+    function addActiveClass(i) {
+      var item = mask[i];
+      return function() {
+        item.classList.toggle("active");
+      };
+    }
   }
-}
+};
 </script>
 
-<style>
+<style lang="scss">
 .container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+  height: 100vh;
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    span {
+      transition: all 0.4s ease;
+      // mask-position: 100% 100%;
+      opacity: 0;
+      font-size: 30px;
+      letter-spacing: 0px;
+      display: inline-block;
+      // mask-size: 3400% 100%;
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
 }
 </style>
